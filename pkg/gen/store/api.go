@@ -6,10 +6,93 @@ package store
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"time"
+
 	"github.com/deepmap/oapi-codegen/pkg/runtime"
 	"github.com/go-chi/chi"
-	"net/http"
 )
+
+// Address defines model for Address.
+type Address struct {
+	City   *string `json:"city,omitempty"`
+	State  *string `json:"state,omitempty"`
+	Street *string `json:"street,omitempty"`
+	Zip    *string `json:"zip,omitempty"`
+}
+
+// ApiResponse defines model for ApiResponse.
+type ApiResponse struct {
+	Code    *int32  `json:"code,omitempty"`
+	Message *string `json:"message,omitempty"`
+	Type    *string `json:"type,omitempty"`
+}
+
+// Category defines model for Category.
+type Category struct {
+	Id   *int64  `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+}
+
+// Customer defines model for Customer.
+type Customer struct {
+	Address  *[]Address `json:"address,omitempty"`
+	Id       *int64     `json:"id,omitempty"`
+	Username *string    `json:"username,omitempty"`
+}
+
+// Order defines model for Order.
+type Order struct {
+	Complete *bool      `json:"complete,omitempty"`
+	Id       *int64     `json:"id,omitempty"`
+	PetId    *int64     `json:"petId,omitempty"`
+	Quantity *int32     `json:"quantity,omitempty"`
+	ShipDate *time.Time `json:"shipDate,omitempty"`
+
+	// Order Status
+	Status *string `json:"status,omitempty"`
+}
+
+// Pet defines model for Pet.
+type Pet struct {
+	Category  *Category `json:"category,omitempty"`
+	Id        *int64    `json:"id,omitempty"`
+	Name      string    `json:"name"`
+	PhotoUrls []string  `json:"photoUrls"`
+
+	// pet status in the store
+	Status *string `json:"status,omitempty"`
+	Tags   *[]Tag  `json:"tags,omitempty"`
+}
+
+// Tag defines model for Tag.
+type Tag struct {
+	Id   *int64  `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+}
+
+// User defines model for User.
+type User struct {
+	Email     *string `json:"email,omitempty"`
+	FirstName *string `json:"firstName,omitempty"`
+	Id        *int64  `json:"id,omitempty"`
+	LastName  *string `json:"lastName,omitempty"`
+	Password  *string `json:"password,omitempty"`
+	Phone     *string `json:"phone,omitempty"`
+
+	// User Status
+	UserStatus *int32  `json:"userStatus,omitempty"`
+	Username   *string `json:"username,omitempty"`
+}
+
+// UserArray defines model for UserArray.
+type UserArray []User
+
+// PlaceOrderJSONBody defines parameters for PlaceOrder.
+type PlaceOrderJSONBody Order
+
+// PlaceOrderRequestBody defines body for PlaceOrder for application/json ContentType.
+type PlaceOrderJSONRequestBody PlaceOrderJSONBody
 
 type ServerInterface interface {
 	// Returns pet inventories by status (GET /store/inventory)
